@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="Start"
         tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="255dp" />
+        tools:layout_editor_absoluteY="203dp" />
 
     <Button
         android:id="@+id/button3"
@@ -36,9 +36,8 @@
         android:layout_width="269dp"
         android:layout_height="127dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.669"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="27dp"
+        tools:layout_editor_absoluteY="28dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
