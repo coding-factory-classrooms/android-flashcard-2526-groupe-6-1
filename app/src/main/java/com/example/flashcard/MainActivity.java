@@ -66,14 +66,15 @@ public class MainActivity extends AppCompatActivity {
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Selon l'index, lancer une activité différente
+
                 Intent intent;
-                String question = "Quelle est la capitale de la France ?";
-                ArrayList<String> answer = new ArrayList<>();
-                answer.add(0, "response 1");
-                answer.add(1, "response 2");
-                answer.add(2, "response 3");
-                answer.add(3, "response 4");
+
+                String question = "Que représente cette image";
+                ArrayList<Reponse> answer = new ArrayList<>();
+                answer.add(0, new Reponse("reponse 1", true));
+                answer.add(1, new Reponse("response 2", false));
+                answer.add(2, new Reponse("response 3",false));
+                answer.add(3, new Reponse("response 3",false));
                 switch (which) {
                     case 0: // Facile
                         intent = new Intent(MainActivity.this, LevelActivity.class);
@@ -104,5 +105,23 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public class Reponse {
+        private String response;
+        private boolean estCorrecte;
+
+        public Reponse(String response, boolean estCorrecte) {
+            this.response = response;
+            this.estCorrecte = estCorrecte;
+        }
+
+        public String getResponse() {
+            return response;
+        }
+
+        public boolean isEstCorrecte() {
+            return estCorrecte;
+        }
     }
 }
