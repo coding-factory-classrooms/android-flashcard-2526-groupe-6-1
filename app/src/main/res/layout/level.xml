@@ -16,12 +16,22 @@
         tools:layout_editor_absoluteY="246dp" />
 
     <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RadioButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="301dp" />
+
+    <RadioButton
         android:id="@+id/radioButton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="RadioButton"
         app:layout_constraintEnd_toEndOf="@+id/radioButton2"
-        app:layout_constraintHorizontal_bias="0.173"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/radioButton2"
         tools:layout_editor_absoluteY="349dp" />
 
@@ -31,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="RadioButton"
         app:layout_constraintEnd_toEndOf="@+id/radioButton3"
-        app:layout_constraintHorizontal_bias="0.173"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/radioButton3"
         tools:layout_editor_absoluteY="404dp" />
 
@@ -41,18 +51,9 @@
         android:layout_height="wrap_content"
         android:text="RadioButton"
         app:layout_constraintEnd_toEndOf="@+id/radioButton4"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/radioButton4"
         tools:layout_editor_absoluteY="459dp" />
-
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RadioButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.525"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="301dp" />
 
     <ImageView
         android:id="@+id/imageView"
