@@ -1,0 +1,55 @@
+[
+  {
+    "difficulte": "facile",
+    "image": "cheval_image_question",
+    "imagereponce": "cheval_image_reponse",
+    "reponses": [
+      {
+        "reponce": "cheval",
+        "bonnereponce": true
+      },
+      {
+        "reponce": "chien",
+        "bonnereponce": false
+      },
+      {
+        "reponce": "chat",
+        "bonnereponce": false
+      }
+    ]
+  },
+  {
+    "difficulte": "facile",
+    "image": "autre_question_image",
+    "imagereponce": "autre_reponse_image",
+    "reponses": [
+      {
+        "reponce": "sdfsdg",
+        "bonnereponce": true
+      },
+      {
+        "reponce": "chddddien",
+        "bonnereponce": false
+      },
+      {
+        "reponce": "chgdgdgat",
+        "bonnereponce": false
+      }
+    ]
+  },
+  {
+    "difficulte": "moyen",
+    "image": "question_moyenne_img",
+    "imagereponce": "reponse_moyenne_img",
+    "reponses": [
+      {
+        "reponce": "Réponse A",
+        "bonnereponce": false
+      },
+      {
+        "reponce": "Réponse B",
+        "bonnereponce": true
+      }
+    ]
+  }
+]

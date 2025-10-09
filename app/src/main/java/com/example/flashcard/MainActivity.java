@@ -20,6 +20,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.InputStream;
+import java.io.InputStreamReader;import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.stream.Collectors;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
@@ -178,6 +185,15 @@ public class MainActivity extends AppCompatActivity {
                 reponseslist.add(new Reponse("chat",false));
 
                 questionslist.add(new Question("facille", 0, reponseslist,0));
+
+                List<Reponse> reponseList = new ArrayList<>();
+
+                reponseslist.add(new Reponse("sdfsdg",true));
+                reponseslist.add(new Reponse("chddddien",false));
+                reponseslist.add(new Reponse("chgdgdgat",false));
+
+                questionslist.add(new Question("facille", 0, reponseslist,0));
+
                 switch (which) {
                     case 0: // Facile
                         intent = new Intent(MainActivity.this, LevelActivity.class);
