@@ -12,10 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flashcard">
         <activity
-            android:name=".ScoreActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PopupActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ListLevelActivity"
@@ -27,7 +24,7 @@
             android:name=".LevelActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ScoreActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
