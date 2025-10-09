@@ -1,5 +1,6 @@
 package com.example.flashcard;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -82,12 +83,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static class Question implements Parcelable {
+        // Ces noms doivent correspondre EXACTEMENT aux clés du JSON
         private String difficulte;
         private String image;
         private List<Reponse> reponses;
         private String imagereponce;
 
-        // Constructor
+
+        // Constructeur vide nécessaire pour Gson
+        public Question() {}
+
         public Question(String difficulte, String image, List<Reponse> reponses, String imagereponce) {
             this.difficulte = difficulte;
             this.image = image;
@@ -97,15 +102,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         public String getdifficulte() { return difficulte; }
-        public String getImage() { return image; }
         public List<Reponse> getReponses() { return reponses; }
-        public String getImagereponce() { return imagereponce; }
 
-        // Parcel constructor
+
+        public int getImage(Context context) {
+            return context.getResources().getIdentifier(image, "drawable", context.getPackageName());
+        }
+
+        public int getImagereponce(Context context) {
+            return context.getResources().getIdentifier(imagereponce, "drawable", context.getPackageName());
+        }
+
+
         protected Question(Parcel in) {
             difficulte = in.readString();
             image = in.readString();
             reponses = in.createTypedArrayList(Reponse.CREATOR);
+            imagereponce = in.readString();
         }
 
         @Override
@@ -117,9 +130,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public int describeContents() {
-            return 0;
-        }
+        public int describeContents() { return 0; }
 
         public static final Creator<Question> CREATOR = new Creator<Question>() {
             @Override
@@ -165,63 +176,54 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    private void showDifficultyPopup(){
+    private void showDifficultyPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choisis la difficulté");
 
         CharSequence[] options = {"Facile", "Moyen", "Difficile"};
+        String[] difficultiesInJson = {"facile", "moyen", "difficile"};
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Intent intent;
+                List<Question> toutesLesQuestions = chargerQuestionsJson();
 
-                List<Reponse> reponseslist = new ArrayList<>();
-                List<Question> questionslist = new ArrayList<>();
-                String difficulty = "";
 
-                reponseslist.add(new Reponse("cheval",true));
-                reponseslist.add(new Reponse("chien",false));
-                reponseslist.add(new Reponse("chat",false));
+                String difficulteChoisie = difficultiesInJson[which];
+                ArrayList<Question> questionsFiltrees = toutesLesQuestions.stream()
+                        .filter(q -> q.getdifficulte().equalsIgnoreCase(difficulteChoisie))
+                        .collect(Collectors.toCollection(ArrayList::new));
 
-                questionslist.add(new Question(difficulty, "", reponseslist,""));
+                if (!questionsFiltrees.isEmpty()) {
+                    Intent intent = new Intent(MainActivity.this, LevelActivity.class);
 
-                List<Reponse> reponseList = new ArrayList<>();
-
-                reponseList.add(new Reponse("sdfsdg",true));
-                reponseList.add(new Reponse("chddddien",false));
-                reponseList.add(new Reponse("chgdgdgat",false));
-
-                questionslist.add(new Question(difficulty, "", reponseList,""));
-
-                switch (which) {
-                    case 0: // Facile
-                        intent = new Intent(MainActivity.this, LevelActivity.class);
-                        difficulty = "Facile";
-                        intent.putExtra("question", (Serializable) questionslist);
-                        break;
-                    case 1: // Moyen
-                        intent = new Intent(MainActivity.this, LevelActivity.class);
-                        difficulty = "Moyen";
-                        intent.putExtra("question", (Serializable) questionslist);
-                        break;
-                    case 2: // Difficile
-                        intent = new Intent(MainActivity.this, LevelActivity.class);
-                        difficulty = "Difficile";
-                        intent.putExtra("question", (Serializable) questionslist);
-                        break;
-                    default:
-                        return; // ne rien faire si problème
+                    intent.putParcelableArrayListExtra("questions", questionsFiltrees);
+                    startActivity(intent);
+                } else {
+                    // Gérer le cas où aucune question n'est trouvée pour cette difficulté
+                    //toast("Aucune question trouvée pour cette difficulté.");
                 }
 
-                startActivity(intent);
                 dialog.dismiss();
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    private List<Question> chargerQuestionsJson() {
+        // Ouvre le flux de lecture pour le fichier JSON
+        InputStream inputStream = getResources().openRawResource(R.raw.questions);
+        Reader reader = new InputStreamReader(inputStream);
+
+        // Prépare Gson pour convertir le JSON en une liste de Questions
+        Gson gson = new Gson();
+        Type questionListType = new TypeToken<ArrayList<Question>>(){}.getType();
+
+        // Convertit et retourne la liste. Retourne une liste vide en cas d'erreur.
+        List<Question> questions = gson.fromJson(reader, questionListType);
+        return questions != null ? questions : new ArrayList<>();
     }
 
 }
