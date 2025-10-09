@@ -48,15 +48,15 @@ public class LevelActivity extends AppCompatActivity {
         radioGroup = new RadioGroup(this);
         radioGroup.setOrientation(RadioGroup.VERTICAL); // oriente verticalement les boutons de réponse
 
-        List<response> reponse = srcIntent.getStringArrayListExtra("reponse");
-
-        for (int i = 0; i < reponse.size(); i++) {
-            RadioButton radioButton = new RadioButton(this);
-            radioButton.setText();
-            radioButton.setId();
-            radioGroup.addView(radioButton);
-        }
-
-        layout.addView(radioGroup);
+//        List<response> reponse = srcIntent.getStringArrayListExtra("reponse");
+//
+//        for (int i = 0; i < reponse.size(); i++) {
+//            RadioButton radioButton = new RadioButton(this);
+//            radioButton.setText();
+//            radioButton.setId();
+//            radioGroup.addView(radioButton);
+//        }
+//
+//        layout.addView(radioGroup);
     }
 }

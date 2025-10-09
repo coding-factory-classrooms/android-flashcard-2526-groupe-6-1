@@ -2,9 +2,9 @@ package com.example.flashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.Button;
-import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +13,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,104 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
     public Button startbutton, aproposbutton, selectbutton;
+
+
+
+    public static class Reponse implements Parcelable {
+        private boolean bonnereponce;
+        private String reponce;
+
+        public Reponse(String reponce, boolean bonnereponce) {
+            this.reponce = reponce;
+            this.bonnereponce = bonnereponce;
+        }
+
+        public boolean isBonneReponce() {
+            return bonnereponce;
+        }
+
+        public String getReponce() {
+            return reponce;
+        }
+
+        protected Reponse(Parcel in) {
+            bonnereponce = in.readByte() != 0; // boolean stored as byte
+            reponce = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeByte((byte) (bonnereponce ? 1 : 0));
+            dest.writeString(reponce);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<Reponse> CREATOR = new Creator<Reponse>() {
+            @Override
+            public Reponse createFromParcel(Parcel in) {
+                return new Reponse(in);
+            }
+
+            @Override
+            public Reponse[] newArray(int size) {
+                return new Reponse[size];
+            }
+        };
+    }
+
+
+    public static class Question implements Parcelable {
+        private String difficulte;
+        private int image;
+        private List<Reponse> reponses;
+
+        // Constructor
+        public Question(String difficulte, int image, List<Reponse> reponses) {
+            this.difficulte = difficulte;
+            this.image = image;
+            this.reponses = reponses;
+        }
+
+
+        public String getdifficulte() { return difficulte; }
+        public int getImage() { return image; }
+        public List<Reponse> getReponses() { return reponses; }
+
+        // Parcel constructor
+        protected Question(Parcel in) {
+            difficulte = in.readString();
+            image = in.readInt();
+            reponses = in.createTypedArrayList(Reponse.CREATOR);
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(difficulte);
+            dest.writeInt(image);
+            dest.writeTypedList(reponses);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<Question> CREATOR = new Creator<Question>() {
+            @Override
+            public Question createFromParcel(Parcel in) {
+                return new Question(in);
+            }
+
+            @Override
+            public Question[] newArray(int size) {
+                return new Question[size];
+            }
+        };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,21 +204,21 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public class Reponse {
-        private String response;
-        private boolean estCorrecte;
-
-        public Reponse(String response, boolean estCorrecte) {
-            this.response = response;
-            this.estCorrecte = estCorrecte;
-        }
-
-        public String getResponse() {
-            return response;
-        }
-
-        public boolean isEstCorrecte() {
-            return estCorrecte;
-        }
-    }
+//    public class Reponse {
+//        private String response;
+//        private boolean estCorrecte;
+//
+//        public Reponse(String response, boolean estCorrecte) {
+//            this.response = response;
+//            this.estCorrecte = estCorrecte;
+//        }
+//
+//        public String getResponse() {
+//            return response;
+//        }
+//
+//        public boolean isEstCorrecte() {
+//            return estCorrecte;
+//        }
+//    }
 }
