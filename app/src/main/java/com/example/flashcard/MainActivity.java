@@ -78,18 +78,21 @@ public class MainActivity extends AppCompatActivity {
         private String difficulte;
         private int image;
         private List<Reponse> reponses;
+        private int imagereponce;
 
         // Constructor
-        public Question(String difficulte, int image, List<Reponse> reponses) {
+        public Question(String difficulte, int image, List<Reponse> reponses, int imagereponce) {
             this.difficulte = difficulte;
             this.image = image;
             this.reponses = reponses;
+            this.imagereponce = imagereponce;
         }
 
 
         public String getdifficulte() { return difficulte; }
         public int getImage() { return image; }
         public List<Reponse> getReponses() { return reponses; }
+        public int getImagereponce() { return imagereponce; }
 
         // Parcel constructor
         protected Question(Parcel in) {
@@ -103,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             dest.writeString(difficulte);
             dest.writeInt(image);
             dest.writeTypedList(reponses);
+            dest.writeInt(imagereponce);
         }
 
         @Override
@@ -173,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 reponseslist.add(new Reponse("chien",false));
                 reponseslist.add(new Reponse("chat",false));
 
-                questionslist.add(new Question("facille", 0, reponseslist));
+                questionslist.add(new Question("facille", 0, reponseslist,0));
                 switch (which) {
                     case 0: // Facile
                         intent = new Intent(MainActivity.this, LevelActivity.class);
