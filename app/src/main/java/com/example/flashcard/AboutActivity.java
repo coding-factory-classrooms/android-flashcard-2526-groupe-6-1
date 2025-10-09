@@ -35,4 +35,5 @@ public class AboutActivity extends AppCompatActivity {
             versionText.setText("Version inconnue");
         }
     }
+
 }
