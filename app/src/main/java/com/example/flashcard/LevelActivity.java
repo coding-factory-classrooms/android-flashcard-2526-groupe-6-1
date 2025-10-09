@@ -66,7 +66,7 @@ public class LevelActivity extends AppCompatActivity {
 
 
         //affichage des réponses
-        for (int i = 0; i < reponses.size(); i++) {
+        for (int i = 0; i < listquestion.get(0).getReponses().size(); i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText(reponses.get(i).getReponce());
             radioButton.setId(View.generateViewId()); // pour donner un ID unique automatiquement

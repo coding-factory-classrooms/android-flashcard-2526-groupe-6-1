@@ -189,11 +189,11 @@ public class MainActivity extends AppCompatActivity {
 
                 List<Reponse> reponseList = new ArrayList<>();
 
-                reponseslist.add(new Reponse("sdfsdg",true));
-                reponseslist.add(new Reponse("chddddien",false));
-                reponseslist.add(new Reponse("chgdgdgat",false));
+                reponseList.add(new Reponse("sdfsdg",true));
+                reponseList.add(new Reponse("chddddien",false));
+                reponseList.add(new Reponse("chgdgdgat",false));
 
-                questionslist.add(new Question(difficulty, "", reponseslist,""));
+                questionslist.add(new Question(difficulty, "", reponseList,""));
 
                 switch (which) {
                     case 0: // Facile

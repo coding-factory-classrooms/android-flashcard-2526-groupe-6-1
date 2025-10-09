@@ -12,19 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Flashcard">
         <activity
-            android:name=".MainActivity"
+            android:name=".AboutActivity"
             android:exported="false" />
         <activity
             android:name=".ListLevelActivity"
             android:exported="false" />
         <activity
-            android:name=".AboutActivity"
+            android:name=".ScoreActivity"
             android:exported="false" />
         <activity
             android:name=".LevelActivity"
             android:exported="false" />
         <activity
-            android:name=".ScoreActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
