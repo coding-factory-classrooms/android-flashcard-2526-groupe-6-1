@@ -1,8 +1,8 @@
 [
   {
     "difficulte": "facile",
-    "image": "cheval_image_question",
-    "imagereponce": "cheval_image_reponse",
+    "image": "lol",
+    "imagereponce": "vlol",
     "reponses": [
       {
         "reponce": "cheval",
@@ -20,8 +20,8 @@
   },
   {
     "difficulte": "facile",
-    "image": "autre_question_image",
-    "imagereponce": "autre_reponse_image",
+    "image": "jesus",
+    "imagereponce": "vjesus",
     "reponses": [
       {
         "reponce": "sdfsdg",
@@ -39,8 +39,8 @@
   },
   {
     "difficulte": "moyen",
-    "image": "question_moyenne_img",
-    "imagereponce": "reponse_moyenne_img",
+    "image": "pied",
+    "imagereponce": "vpied",
     "reponses": [
       {
         "reponce": "Réponse A",

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -29,6 +30,7 @@ public class LevelActivity extends AppCompatActivity {
     public RadioButton radioButton;
     public LinearLayout layout;
     public RadioGroup radioGroup;
+    public ImageView guess;
 
 
     @Override
@@ -57,8 +59,16 @@ public class LevelActivity extends AppCompatActivity {
 
         //récupération des questions et réponse
         List<MainActivity.Question> listquestion = srcIntent.getParcelableArrayListExtra("question");
+        guess = findViewById(R.id.pictureimageView);
+
+        if(listquestion != null && !listquestion.isEmpty()){ // vérification si la liste n'est pas vide
+            MainActivity.Question premiereQuestion = listquestion.get(0);
+            guess.setImageResource(premiereQuestion.getImage(this));
+        }
+
         MainActivity.Question q = listquestion.get(0);
         List<MainActivity.Reponse> reponses = q.getReponses();
+
 
         //Nombre de question
         difficultytextView = findViewById(R.id.difficultytextView);
@@ -89,19 +99,25 @@ public class LevelActivity extends AppCompatActivity {
                         break;
                     }
                 }
+                Intent intent = new Intent(LevelActivity.this, LevelActivity.class);
+                intent.putExtra("question", (ArrayList<MainActivity.Question>) listquestion);
+
+                //bonne réponse
                 if(reponses.get(indexTrouve).isBonneReponce()){
                     String message = "Bonne réponse!";
-                    showResultPopup(message,"La bonne réponse est bien " + reponses.get(indexTrouve).getReponce());
-                }else{
+                    showResultPopup(message,"La bonne réponse est bien " + reponses.get(indexTrouve).getReponce(), intent);
+
+                }else{ //mauvaise réponse
                     String message = "Oops dommage";
-                    String reponse = "";
+                    String mauvaischoix = "Dommage mauvaise réponse la bonne réponse était ";
+                    String reponse ="";
                     for (MainActivity.Reponse rep : reponses) {
                         if (rep.isBonneReponce()) {
                             reponse = rep.getReponce();
                             break;
                         }
                     }
-                    showResultPopup(message, "La bonne réponse était " + reponse);
+                    showResultPopup(message, mauvaischoix+ reponse, intent);
                 }
             }
 
@@ -110,10 +126,13 @@ public class LevelActivity extends AppCompatActivity {
 
     }
 
-    private void showResultPopup(String message, String reponse){
+    private void showResultPopup(String message, String reponse, Intent intent){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(message)
-                .setMessage(reponse);
+                .setMessage(reponse).setPositiveButton("Prochain niveau",(dialog, which)->{
+                    dialog.dismiss();
+                    startActivity(intent);
+                });
 
         AlertDialog dialog = builder.create();
         dialog.show();
