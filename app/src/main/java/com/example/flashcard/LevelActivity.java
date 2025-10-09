@@ -2,6 +2,7 @@ package com.example.flashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -14,6 +15,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LevelActivity extends AppCompatActivity {
@@ -36,16 +38,27 @@ public class LevelActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        //récupération de l'intent
         Intent srcIntent = getIntent();
 
         //modification du nom de la question
         questiontextView = findViewById(R.id.questiontextView);
         questiontextView.setText("Que voyez-vous ?");
 
-        //modification des reponses
-        layout = findViewById(R.id.radioGroupContainer); // conteneur dans le XML
-        radioGroup = new RadioGroup(this);
-        radioGroup.setOrientation(RadioGroup.VERTICAL); // oriente verticalement les boutons de réponse
+        //récupération des questions et réponse
+        ArrayList<MainActivity.Question> listquestion = srcIntent.getParcelableArrayListExtra("question");
+        for (MainActivity.Question question : listquestion){
+            //Positionnement des réponses dans le layout
+            layout = findViewById(R.id.radioGroupContainer); // conteneur dans le XML
+            radioGroup = new RadioGroup(this);
+            radioGroup.setOrientation(RadioGroup.VERTICAL); // oriente verticalement les boutons de réponse
+            List<MainActivity.Reponse> reponses = question.getReponses();
+            for(int i = 0; i < reponses.size(); i ++){
+                RadioButton radioButton = new RadioButton(this);
+                radioButton.setText();
+            }
+        }
+
 
 
 
