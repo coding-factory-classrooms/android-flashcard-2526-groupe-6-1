@@ -55,7 +55,7 @@ public class LevelActivity extends AppCompatActivity {
             List<MainActivity.Reponse> reponses = question.getReponses();
             for(int i = 0; i < reponses.size(); i ++){
                 RadioButton radioButton = new RadioButton(this);
-                radioButton.setText();
+                radioButton.setText((CharSequence) reponses.get(i));
             }
         }
 
