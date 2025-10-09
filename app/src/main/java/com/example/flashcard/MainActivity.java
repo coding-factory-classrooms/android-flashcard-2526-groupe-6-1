@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static class Question implements Parcelable {
-        // Ces noms doivent correspondre EXACTEMENT aux clés du JSON
+        //correspondre EXACTEMENT aux clés du JSON
         private String difficulte;
         private String image;
         private List<Reponse> reponses;
