@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 
 import androidx.appcompat.app.AlertDialog;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
         startbutton = findViewById(R.id.startbutton);
         startbutton.setOnClickListener(view ->{
-
             showDifficultyPopup();
          });
 
@@ -166,30 +166,26 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent;
 
-                String question = "Que représente cette image";
-                ArrayList<Reponse> answer = new ArrayList<>();
-                answer.add(0, new Reponse("reponse 1", true));
-                answer.add(1, new Reponse("response 2", false));
-                answer.add(2, new Reponse("response 3",false));
-                answer.add(3, new Reponse("response 3",false));
+                List<Reponse> reponseslist = new ArrayList<>();
+                List<Question> questionslist = new ArrayList<>();
+
+                reponseslist.add(new Reponse("cheval",true));
+                reponseslist.add(new Reponse("chien",false));
+                reponseslist.add(new Reponse("chat",false));
+
+                questionslist.add(new Question("facille", 0, reponseslist));
                 switch (which) {
                     case 0: // Facile
                         intent = new Intent(MainActivity.this, LevelActivity.class);
-                        intent.putExtra("difficulty", 3);
-                        intent.putExtra("question_text", question);
-                        intent.putExtra("reponse", answer);
+                        intent.putExtra("question", (Serializable) questionslist);
                         break;
                     case 1: // Moyen
                         intent = new Intent(MainActivity.this, LevelActivity.class);
-                        intent.putExtra("difficulty", 5);
-                        intent.putExtra("question_text", question);
-                        intent.putExtra("reponse", answer);
+                        intent.putExtra("question", (Serializable) questionslist);
                         break;
                     case 2: // Difficile
                         intent = new Intent(MainActivity.this, LevelActivity.class);
-                        intent.putExtra("difficulty", 10);
-                        intent.putExtra("question_text", question);
-                        intent.putExtra("reponse", answer);
+                        intent.putExtra("question", (Serializable) questionslist);
                         break;
                     default:
                         return; // ne rien faire si problème
@@ -204,21 +200,4 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-//    public class Reponse {
-//        private String response;
-//        private boolean estCorrecte;
-//
-//        public Reponse(String response, boolean estCorrecte) {
-//            this.response = response;
-//            this.estCorrecte = estCorrecte;
-//        }
-//
-//        public String getResponse() {
-//            return response;
-//        }
-//
-//        public boolean isEstCorrecte() {
-//            return estCorrecte;
-//        }
-//    }
 }

@@ -38,6 +38,7 @@ public class LevelActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         //récupération de l'intent
         Intent srcIntent = getIntent();
 
@@ -45,32 +46,24 @@ public class LevelActivity extends AppCompatActivity {
         questiontextView = findViewById(R.id.questiontextView);
         questiontextView.setText("Que voyez-vous ?");
 
+
+        //Positionnement des réponses dans le layout
+        layout = findViewById(R.id.radioGroupContainer); // conteneur dans le XML
+        radioGroup = new RadioGroup(this);
+        radioGroup.setOrientation(RadioGroup.VERTICAL); // oriente verticalement les boutons de réponse
+
         //récupération des questions et réponse
-        ArrayList<MainActivity.Question> listquestion = srcIntent.getParcelableArrayListExtra("question");
-        for (MainActivity.Question question : listquestion){
-            //Positionnement des réponses dans le layout
-            layout = findViewById(R.id.radioGroupContainer); // conteneur dans le XML
-            radioGroup = new RadioGroup(this);
-            radioGroup.setOrientation(RadioGroup.VERTICAL); // oriente verticalement les boutons de réponse
-            List<MainActivity.Reponse> reponses = question.getReponses();
-            for(int i = 0; i < reponses.size(); i ++){
-                RadioButton radioButton = new RadioButton(this);
-                radioButton.setText((CharSequence) reponses.get(i));
-            }
+        List<MainActivity.Question> listquestion = srcIntent.getParcelableArrayListExtra("question");
+        MainActivity.Question q = listquestion.get(0);
+        List<MainActivity.Reponse> reponses = q.getReponses();
+
+        for (int i = 0; i < reponses.size(); i++) {
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setText(reponses.get(i).getReponce());
+            radioButton.setId(View.generateViewId()); // pour donner un ID unique automatiquement
+            radioGroup.addView(radioButton);
         }
+        layout.addView(radioGroup);
 
-
-
-
-//        List<response> reponse = srcIntent.getStringArrayListExtra("reponse");
-//
-//        for (int i = 0; i < reponse.size(); i++) {
-//            RadioButton radioButton = new RadioButton(this);
-//            radioButton.setText();
-//            radioButton.setId();
-//            radioGroup.addView(radioButton);
-//        }
-//
-//        layout.addView(radioGroup);
     }
 }
