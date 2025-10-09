@@ -169,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
         selectbutton = findViewById(R.id.selectbutton);
         selectbutton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ListLevelActivity.class);
+            List<Question> toutesLesQuestions = chargerQuestionsDepuisJson();
+            intent.putParcelableArrayListExtra("question", new ArrayList<>(toutesLesQuestions));
             startActivity(intent);
         });
     }
