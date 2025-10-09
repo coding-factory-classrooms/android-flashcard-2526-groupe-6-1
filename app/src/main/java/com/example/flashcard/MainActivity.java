@@ -165,31 +165,28 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 Intent intent;
+                ArrayList<Question> questionlist = new ArrayList<>();
+                for(int i = 0; i<5; i++){
+                    ArrayList<Reponse> reponselist = new ArrayList<>();
+                    reponselist.add(new Reponse("Cheval",true));
+                    reponselist.add(new Reponse("chien",false));
+                    reponselist.add(new Reponse("chat",false));
+                    questionlist.add(new Question("facile", 0,reponselist));
+                }
 
-                String question = "Que représente cette image";
-                ArrayList<Reponse> answer = new ArrayList<>();
-                answer.add(0, new Reponse("reponse 1", true));
-                answer.add(1, new Reponse("response 2", false));
-                answer.add(2, new Reponse("response 3",false));
-                answer.add(3, new Reponse("response 3",false));
                 switch (which) {
                     case 0: // Facile
                         intent = new Intent(MainActivity.this, LevelActivity.class);
-                        intent.putExtra("difficulty", 3);
-                        intent.putExtra("question_text", question);
-                        intent.putExtra("reponse", answer);
+                        intent.putExtra("question", questionlist);
+
                         break;
                     case 1: // Moyen
                         intent = new Intent(MainActivity.this, LevelActivity.class);
-                        intent.putExtra("difficulty", 5);
-                        intent.putExtra("question_text", question);
-                        intent.putExtra("reponse", answer);
+                        intent.putExtra("question", questionlist);
                         break;
                     case 2: // Difficile
                         intent = new Intent(MainActivity.this, LevelActivity.class);
-                        intent.putExtra("difficulty", 10);
-                        intent.putExtra("question_text", question);
-                        intent.putExtra("reponse", answer);
+                        intent.putExtra("question", questionlist);
                         break;
                     default:
                         return; // ne rien faire si problème
@@ -203,22 +200,4 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-//    public class Reponse {
-//        private String response;
-//        private boolean estCorrecte;
-//
-//        public Reponse(String response, boolean estCorrecte) {
-//            this.response = response;
-//            this.estCorrecte = estCorrecte;
-//        }
-//
-//        public String getResponse() {
-//            return response;
-//        }
-//
-//        public boolean isEstCorrecte() {
-//            return estCorrecte;
-//        }
-//    }
 }

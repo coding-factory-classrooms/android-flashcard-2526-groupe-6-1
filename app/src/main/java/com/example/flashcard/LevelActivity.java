@@ -40,13 +40,14 @@ public class LevelActivity extends AppCompatActivity {
 
         //modification du nom de la question
         questiontextView = findViewById(R.id.questiontextView);
-        question = srcIntent.getStringExtra("question_text");
-        questiontextView.setText(question);
+        questiontextView.setText("Que voyez-vous ?");
 
         //modification des reponses
-        layout = findViewById(R.id.radioGroupContainer); // ton conteneur dans le XML
+        layout = findViewById(R.id.radioGroupContainer); // conteneur dans le XML
         radioGroup = new RadioGroup(this);
         radioGroup.setOrientation(RadioGroup.VERTICAL); // oriente verticalement les boutons de réponse
+
+
 
 //        List<response> reponse = srcIntent.getStringArrayListExtra("reponse");
 //
