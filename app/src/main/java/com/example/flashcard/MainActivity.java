@@ -83,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static class Question implements Parcelable {
         private String difficulte;
-        private int image;
+        private String image;
         private List<Reponse> reponses;
-        private int imagereponce;
+        private String imagereponce;
 
         // Constructor
-        public Question(String difficulte, int image, List<Reponse> reponses, int imagereponce) {
+        public Question(String difficulte, String image, List<Reponse> reponses, String imagereponce) {
             this.difficulte = difficulte;
             this.image = image;
             this.reponses = reponses;
@@ -97,23 +97,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         public String getdifficulte() { return difficulte; }
-        public int getImage() { return image; }
+        public String getImage() { return image; }
         public List<Reponse> getReponses() { return reponses; }
-        public int getImagereponce() { return imagereponce; }
+        public String getImagereponce() { return imagereponce; }
 
         // Parcel constructor
         protected Question(Parcel in) {
             difficulte = in.readString();
-            image = in.readInt();
+            image = in.readString();
             reponses = in.createTypedArrayList(Reponse.CREATOR);
         }
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(difficulte);
-            dest.writeInt(image);
+            dest.writeString(image);
             dest.writeTypedList(reponses);
-            dest.writeInt(imagereponce);
+            dest.writeString(imagereponce);
         }
 
         @Override
@@ -179,12 +179,13 @@ public class MainActivity extends AppCompatActivity {
 
                 List<Reponse> reponseslist = new ArrayList<>();
                 List<Question> questionslist = new ArrayList<>();
+                String difficulty = "";
 
                 reponseslist.add(new Reponse("cheval",true));
                 reponseslist.add(new Reponse("chien",false));
                 reponseslist.add(new Reponse("chat",false));
 
-                questionslist.add(new Question("facille", 0, reponseslist,0));
+                questionslist.add(new Question(difficulty, "", reponseslist,""));
 
                 List<Reponse> reponseList = new ArrayList<>();
 
@@ -192,19 +193,22 @@ public class MainActivity extends AppCompatActivity {
                 reponseslist.add(new Reponse("chddddien",false));
                 reponseslist.add(new Reponse("chgdgdgat",false));
 
-                questionslist.add(new Question("facille", 0, reponseslist,0));
+                questionslist.add(new Question(difficulty, "", reponseslist,""));
 
                 switch (which) {
                     case 0: // Facile
                         intent = new Intent(MainActivity.this, LevelActivity.class);
+                        difficulty = "Facile";
                         intent.putExtra("question", (Serializable) questionslist);
                         break;
                     case 1: // Moyen
                         intent = new Intent(MainActivity.this, LevelActivity.class);
+                        difficulty = "Moyen";
                         intent.putExtra("question", (Serializable) questionslist);
                         break;
                     case 2: // Difficile
                         intent = new Intent(MainActivity.this, LevelActivity.class);
+                        difficulty = "Difficile";
                         intent.putExtra("question", (Serializable) questionslist);
                         break;
                     default:

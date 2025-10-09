@@ -11,17 +11,19 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LevelActivity extends AppCompatActivity {
 
-    public TextView questiontextView;
+    public TextView questiontextView, countertextView, difficultytextView;
     public String question;
     public  int choix;
     public RadioButton radioButton;
@@ -58,6 +60,12 @@ public class LevelActivity extends AppCompatActivity {
         MainActivity.Question q = listquestion.get(0);
         List<MainActivity.Reponse> reponses = q.getReponses();
 
+        //Nombre de question
+        difficultytextView = findViewById(R.id.difficultytextView);
+        difficultytextView.setText(listquestion.get(0).getdifficulte());
+
+
+        //affichage des réponses
         for (int i = 0; i < reponses.size(); i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText(reponses.get(i).getReponce());
@@ -65,7 +73,7 @@ public class LevelActivity extends AppCompatActivity {
             radioGroup.addView(radioButton);
         }
         layout.addView(radioGroup);
-
+        //bouton de confirmation
         Button confirmation = findViewById(R.id.confirmbutton);
         confirmation.setOnClickListener(view ->{
             int selectedId = radioGroup.getCheckedRadioButtonId();
@@ -73,16 +81,41 @@ public class LevelActivity extends AppCompatActivity {
                 RadioButton selectedButton = findViewById(selectedId);
                 String buttonchose = selectedButton.getText().toString();
                 MainActivity.Reponse resultat = null;
-                for (MainActivity.Reponse r : reponses) {
-                    if (r.getReponce().equalsIgnoreCase(buttonchose)) {
-                        resultat = r;
+                int indexTrouve = -1;
+
+                for (int i = 0; i < reponses.size(); i++) {
+                    if (reponses.get(i).getReponce().equalsIgnoreCase(buttonchose)) {
+                        indexTrouve = i;
                         break;
                     }
                 }
-                Log.d("Choix", "Tu as sélectionné : " + resultat);
-            } else {
-                Log.d("Choix", "Aucun bouton sélectionné");
+                if(reponses.get(indexTrouve).isBonneReponce()){
+                    String message = "Bonne réponse!";
+                    showResultPopup(message,"La bonne réponse est bien " + reponses.get(indexTrouve).getReponce());
+                }else{
+                    String message = "Oops dommage";
+                    String reponse = "";
+                    for (MainActivity.Reponse rep : reponses) {
+                        if (rep.isBonneReponce()) {
+                            reponse = rep.getReponce();
+                            break;
+                        }
+                    }
+                    showResultPopup(message, "La bonne réponse était " + reponse);
+                }
             }
+
         });
+
+
+    }
+
+    private void showResultPopup(String message, String reponse){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(message)
+                .setMessage(reponse);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
