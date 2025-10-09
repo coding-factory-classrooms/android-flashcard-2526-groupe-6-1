@@ -2,7 +2,6 @@ package com.example.flashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -18,20 +18,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.net.CookieHandler;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LevelActivity extends AppCompatActivity {
 
-    public TextView questiontextView, countertextView, difficultytextView;
-    public String question;
-    public  int choix;
-    public RadioButton radioButton;
-    public LinearLayout layout;
-    public RadioGroup radioGroup;
-    public ImageView guess;
+    private TextView questiontextView, countertextView, difficultytextView;
+    private RadioGroup radioGroup;
+    private ImageView guess;
+    private Button confirmationButton;
 
+    private List<MainActivity.Question> questionList;
+    private int currentQuestionIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,97 +41,113 @@ public class LevelActivity extends AppCompatActivity {
             return insets;
         });
 
-        //récupération de l'intent
-        Intent srcIntent = getIntent();
-
-        //modification du nom de la question
-        questiontextView = findViewById(R.id.questiontextView);
-        questiontextView.setText("Que voyez-vous ?");
-
-
-        //Positionnement des réponses dans le layout
-        layout = findViewById(R.id.radioGroupContainer); // conteneur dans le XML
-        radioGroup = new RadioGroup(this);
-        radioGroup.setOrientation(RadioGroup.VERTICAL); // oriente verticalement les boutons de réponse
-
-        //récupération des questions et réponse
-        List<MainActivity.Question> listquestion = srcIntent.getParcelableArrayListExtra("question");
-        guess = findViewById(R.id.pictureimageView);
-
-        if(listquestion != null && !listquestion.isEmpty()){ // vérification si la liste n'est pas vide
-            MainActivity.Question premiereQuestion = listquestion.get(0);
-            guess.setImageResource(premiereQuestion.getImage(this));
-        }
-
-        MainActivity.Question q = listquestion.get(0);
-        List<MainActivity.Reponse> reponses = q.getReponses();
-
-
-        //Nombre de question
-        difficultytextView = findViewById(R.id.difficultytextView);
-        difficultytextView.setText(listquestion.get(0).getdifficulte());
-
-
-        //affichage des réponses
-        for (int i = 0; i < listquestion.get(0).getReponses().size(); i++) {
-            RadioButton radioButton = new RadioButton(this);
-            radioButton.setText(reponses.get(i).getReponce());
-            radioButton.setId(View.generateViewId()); // pour donner un ID unique automatiquement
-            radioGroup.addView(radioButton);
-        }
-        layout.addView(radioGroup);
-        //bouton de confirmation
-        Button confirmation = findViewById(R.id.confirmbutton);
-        confirmation.setOnClickListener(view ->{
-            int selectedId = radioGroup.getCheckedRadioButtonId();
-            if (selectedId != -1) { // -1 = rien sélectionné
-                RadioButton selectedButton = findViewById(selectedId);
-                String buttonchose = selectedButton.getText().toString();
-                MainActivity.Reponse resultat = null;
-                int indexTrouve = -1;
-
-                for (int i = 0; i < reponses.size(); i++) {
-                    if (reponses.get(i).getReponce().equalsIgnoreCase(buttonchose)) {
-                        indexTrouve = i;
-                        break;
-                    }
-                }
-                Intent intent = new Intent(LevelActivity.this, LevelActivity.class);
-                intent.putExtra("question", (ArrayList<MainActivity.Question>) listquestion);
-
-                //bonne réponse
-                if(reponses.get(indexTrouve).isBonneReponce()){
-                    String message = "Bonne réponse!";
-                    showResultPopup(message,"La bonne réponse est bien " + reponses.get(indexTrouve).getReponce(), intent);
-
-                }else{ //mauvaise réponse
-                    String message = "Oops dommage";
-                    String mauvaischoix = "Dommage mauvaise réponse la bonne réponse était ";
-                    String reponse ="";
-                    for (MainActivity.Reponse rep : reponses) {
-                        if (rep.isBonneReponce()) {
-                            reponse = rep.getReponce();
-                            break;
-                        }
-                    }
-                    showResultPopup(message, mauvaischoix+ reponse, intent);
-                }
-            }
-
-        });
-
-
+        initializeViews();
+        initializeQuiz();
+        setupListeners();
     }
 
-    private void showResultPopup(String message, String reponse, Intent intent){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(message)
-                .setMessage(reponse).setPositiveButton("Prochain niveau",(dialog, which)->{
-                    dialog.dismiss();
-                    startActivity(intent);
-                });
+    private void initializeViews() {
+        questiontextView = findViewById(R.id.questiontextView);
+        countertextView = findViewById(R.id.countertextView);
+        difficultytextView = findViewById(R.id.difficultytextView);
+        guess = findViewById(R.id.pictureimageView);
+        confirmationButton = findViewById(R.id.confirmbutton);
+        radioGroup = findViewById(R.id.radiogroup); // Assurez-vous que l'ID est "radiogroup" dans le XML
+    }
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+    private void initializeQuiz() {
+        Intent srcIntent = getIntent();
+        questionList = srcIntent.getParcelableArrayListExtra("question");
+
+        if (questionList == null || questionList.isEmpty()) {
+            Toast.makeText(this, "Aucune question trouvée pour cette difficulté.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        loadQuestion(currentQuestionIndex);
+    }
+
+    private void loadQuestion(int index) {
+        MainActivity.Question currentQuestion = questionList.get(index);
+        List<MainActivity.Reponse> answers = currentQuestion.getReponses();
+
+        difficultytextView.setText(currentQuestion.getDifficulte());
+        questiontextView.setText("Que voyez-vous ?");
+        guess.setImageResource(currentQuestion.getImage(this));
+
+        String counterText = "Question " + (index + 1) + "/" + questionList.size();
+        countertextView.setText(counterText);
+
+        radioGroup.clearCheck();
+        radioGroup.removeAllViews();
+
+        for (MainActivity.Reponse answer : answers) {
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setText(answer.getReponce());
+            radioButton.setId(View.generateViewId());
+            radioGroup.addView(radioButton);
+        }
+    }
+
+    private void setupListeners() {
+        confirmationButton.setOnClickListener(view -> {
+            int selectedId = radioGroup.getCheckedRadioButtonId();
+            if (selectedId == -1) {
+                Toast.makeText(this, "Veuillez sélectionner une réponse.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            checkAnswer(selectedId);
+        });
+    }
+
+    private void checkAnswer(int selectedId) {
+        RadioButton selectedButton = findViewById(selectedId);
+        String selectedAnswerText = selectedButton.getText().toString();
+        List<MainActivity.Reponse> currentAnswers = questionList.get(currentQuestionIndex).getReponses();
+        boolean isCorrect = false;
+        String correctAnswerText = "";
+
+        for (MainActivity.Reponse answer : currentAnswers) {
+            if (answer.isBonneReponce()) {
+                correctAnswerText = answer.getReponce();
+                if (correctAnswerText.equalsIgnoreCase(selectedAnswerText)) {
+                    isCorrect = true;
+                }
+                break;
+            }
+        }
+
+        if (isCorrect) {
+            showResultPopup("Bonne réponse !", "Félicitations !");
+        } else {
+            showResultPopup("Oops, dommage...", "La bonne réponse était : " + correctAnswerText);
+        }
+    }
+
+    private void showResultPopup(String title, String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("Suivant", (dialog, which) -> {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < questionList.size()) {
+                        loadQuestion(currentQuestionIndex);
+                    } else {
+                        showFinalScorePopup();
+                    }
+                })
+                .show();
+    }
+
+    private void showFinalScorePopup() {
+        new AlertDialog.Builder(this)
+                .setTitle("Quiz terminé !")
+                .setMessage("Vous avez répondu à toutes les questions.")
+                .setCancelable(false)
+                .setPositiveButton("Retour au menu", (dialog, which) -> {
+                    finish();
+                })
+                .show();
     }
 }

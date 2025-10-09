@@ -51,5 +51,24 @@
         "bonnereponce": true
       }
     ]
+  },
+  {
+    "difficulte": "difficile",
+    "image": "lol",
+    "imagereponce": "vlol",
+    "reponses": [
+      {
+        "reponce": "cheval",
+        "bonnereponce": true
+      },
+      {
+        "reponce": "chien",
+        "bonnereponce": false
+      },
+      {
+        "reponce": "chat",
+        "bonnereponce": false
+      }
+    ]
   }
 ]

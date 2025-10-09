@@ -29,16 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pictureimageView" />
 
-    <LinearLayout
-        android:id="@+id/radioGroupContainer"
-        android:layout_width="283dp"
-        android:layout_height="246dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/questiontextView"></LinearLayout>
-
     <Button
         android:id="@+id/confirmbutton"
         android:layout_width="wrap_content"
@@ -70,5 +60,22 @@
         app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintStart_toEndOf="@+id/difficultytextView"
         app:layout_constraintTop_toTopOf="@+id/difficultytextView" />
+
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="276dp"
+        android:layout_height="199dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/questiontextView" >
+
+        <LinearLayout
+            android:id="@+id/radiogroupcontaner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
