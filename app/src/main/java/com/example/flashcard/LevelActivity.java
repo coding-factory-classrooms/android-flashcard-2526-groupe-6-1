@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -65,5 +66,23 @@ public class LevelActivity extends AppCompatActivity {
         }
         layout.addView(radioGroup);
 
+        Button confirmation = findViewById(R.id.confirmbutton);
+        confirmation.setOnClickListener(view ->{
+            int selectedId = radioGroup.getCheckedRadioButtonId();
+            if (selectedId != -1) { // -1 = rien sélectionné
+                RadioButton selectedButton = findViewById(selectedId);
+                String buttonchose = selectedButton.getText().toString();
+                MainActivity.Reponse resultat = null;
+                for (MainActivity.Reponse r : reponses) {
+                    if (r.getReponce().equalsIgnoreCase(buttonchose)) {
+                        resultat = r;
+                        break;
+                    }
+                }
+                Log.d("Choix", "Tu as sélectionné : " + resultat);
+            } else {
+                Log.d("Choix", "Aucun bouton sélectionné");
+            }
+        });
     }
 }
