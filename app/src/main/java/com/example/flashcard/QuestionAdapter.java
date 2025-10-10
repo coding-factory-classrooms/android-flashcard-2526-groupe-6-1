@@ -1,6 +1,7 @@
 package com.example.flashcard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
@@ -33,6 +35,17 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         MainActivity.Question question = questions.get(position);
         holder.textViewDifficulte.setText(question.getDifficulte());
         holder.imageView.setImageResource(question.getImage(context));
+
+        // action click
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, LevelActivity.class);
+
+            List<MainActivity.Question> questionList = new ArrayList<>();
+            questionList.add(question);
+            intent.putParcelableArrayListExtra("question", new ArrayList<>(questionList));
+
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -50,4 +63,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             textViewDifficulte = itemView.findViewById(R.id.textviewdificulter);
         }
     }
+
+
 }
