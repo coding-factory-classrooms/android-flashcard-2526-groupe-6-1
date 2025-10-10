@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import android.widget.Button;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
 public class ScoreActivity extends AppCompatActivity {
 
@@ -32,8 +33,8 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     private int score;
-    private int totalQuestions;
-    private String difficulte = "Moyen"; // simulée pour test
+    private List<MainActivity.Question> totalQuestions, questionPerdu;
+    private String difficulte; // simulée pour test
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,58 +44,36 @@ public class ScoreActivity extends AppCompatActivity {
         TextView scoreTextView = findViewById(R.id.scoreTextView);
         Button shareButton = findViewById(R.id.shareButton);
         Button replayButton = findViewById(R.id.replayButton);
+        // recuperation de la list de question de la page LevelActivity
+        Intent srcintent = getIntent();
+        totalQuestions = srcintent.getParcelableArrayListExtra("question");
 
-        // Simuler une liste de questions complètes
-        ArrayList<Question> listQuestion = new ArrayList<>();
-        listQuestion.add(new Question(
-                "Moyen",
-                "Quelle est la capitale de la France ?",
-                new ArrayList<>(Arrays.asList("Paris", "Lyon", "Marseille", "Nice")),
-                "Paris"
-        ));
-        listQuestion.add(new Question(
-                "Moyen",
-                "Combien font 5 + 3 ?",
-                new ArrayList<>(Arrays.asList("6", "8", "9", "7")),
-                "8"
-        ));
-        listQuestion.add(new Question(
-                "Moyen",
-                "Quelle est la couleur du ciel ?",
-                new ArrayList<>(Arrays.asList("Bleu", "Vert", "Rouge", "Noir")),
-                "Bleu"
-        ));
-        listQuestion.add(new Question(
-                "Moyen",
-                "Quel est le résultat de 2 x 2 ?",
-                new ArrayList<>(Arrays.asList("2", "4", "6", "8")),
-                "4"
-        ));
 
-        // Simuler les questions perdues (ratées)
-        ArrayList<Question> questionPerdu = new ArrayList<>();
-        questionPerdu.add(listQuestion.get(1)); // mauvaise réponse à 2ème question
-        questionPerdu.add(listQuestion.get(3)); // mauvaise réponse à 4ème question
 
-        totalQuestions = listQuestion.size();
-        score = totalQuestions - questionPerdu.size();
 
-        scoreTextView.setText("Score : " + score + " / " + totalQuestions);
+
+
+        score = totalQuestions.size() - 1;
+        difficulte = totalQuestions.get(0).getDifficulte();
+
+        questionPerdu = null;
+
+        scoreTextView.setText("Score : " + score + " / " + totalQuestions.size());
 
         // Bouton partager
         shareButton.setOnClickListener(view -> shareScore());
 
         // Bouton rejouer : on renvoie seulement les questions ratées
-        replayButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("replayQuestions", questionPerdu);
-            startActivity(intent);
-        });
+//        replayButton.setOnClickListener(v -> {
+//            Intent intent = new Intent(this, LevelActivity.class);
+//            intent.putParcelableArrayListExtra("replayQuestions", questionPerdu);
+//            startActivity(intent);
+//        });
     }
 
-    // Message de partage incluant la difficulté
+    // fonction du boutton partage
     private void shareScore() {
-        String message = "J'ai eu " + score + "/" + totalQuestions + " au quiz !\n"
+        String message = "J'ai eu " + score + "/" + totalQuestions.size() + " au quiz !\n"
                 + "Difficulté : " + difficulte + "\n"
                 + "🔥 Et toi, tu fais mieux ?";
 
