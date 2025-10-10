@@ -1,19 +1,10 @@
 package com.example.flashcard;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -25,7 +16,7 @@ public class AboutActivity extends AppCompatActivity {
         TextView versionText = findViewById(R.id.appVersion);
 
         try {
-            // Récupère les infos de l'app
+            // Récupèration dynamique  de la version du ficheier gradle
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
 
