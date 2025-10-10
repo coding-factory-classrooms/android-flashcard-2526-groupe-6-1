@@ -47,13 +47,10 @@ public class ScoreActivity extends AppCompatActivity {
         // recuperation de la list de question de la page LevelActivity
         Intent srcintent = getIntent();
         totalQuestions = srcintent.getParcelableArrayListExtra("question");
+        questionPerdu = srcintent.getParcelableArrayListExtra("questionLose");
 
-
-
-
-
-
-        score = totalQuestions.size() - 1;
+        // calcul du score
+        score = totalQuestions.size() - questionPerdu.size();
         difficulte = totalQuestions.get(0).getDifficulte();
 
         questionPerdu = null;

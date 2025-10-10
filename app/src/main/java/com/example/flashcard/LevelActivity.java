@@ -2,6 +2,7 @@ package com.example.flashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -21,6 +22,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class LevelActivity extends AppCompatActivity {
     private ImageView guess;
     private Button confirmationButton;
 
-    private List<MainActivity.Question> questionList;
+    private List<MainActivity.Question> questionList, questionLoseList;
     private int currentQuestionIndex = 0;
 
     @Override
@@ -62,11 +64,14 @@ public class LevelActivity extends AppCompatActivity {
     private void initializeQuiz() {
         Intent srcIntent = getIntent();
         questionList = srcIntent.getParcelableArrayListExtra("question");
-
         if (questionList == null || questionList.isEmpty()) {
             Toast.makeText(this, "Aucune question trouvée pour cette difficulté.", Toast.LENGTH_LONG).show();
             finish();
             return;
+        }
+
+        if( srcIntent.getParcelableArrayListExtra("questionLose") == null) {
+            questionLoseList = new java.util.ArrayList<MainActivity.Question>();
         }
 
         String difficulty = questionList.get(0).getDifficulte();
@@ -140,6 +145,7 @@ public class LevelActivity extends AppCompatActivity {
             showResultPopup("Bonne réponse !", "Félicitations !");
         } else {
             showResultPopup("Oops, dommage...", "La bonne réponse était : " + correctAnswerText);
+            questionLoseList.add(questionList.get(currentQuestionIndex));
         }
     }
 
@@ -164,10 +170,10 @@ public class LevelActivity extends AppCompatActivity {
                 .setTitle("Quiz terminé !")
                 .setMessage("Vous avez répondu à toutes les questions.")
                 .setCancelable(false)
-                .setPositiveButton("Retour au menu", (dialog, which) -> {
+                .setPositiveButton("Voir le score finale", (dialog, which) -> {
                     Intent intent = new Intent(LevelActivity.this, ScoreActivity.class);
-
                     intent.putParcelableArrayListExtra("question", getIntent().getParcelableArrayListExtra("question"));
+                    intent.putParcelableArrayListExtra("questionLose", (ArrayList<? extends Parcelable>) questionLoseList);
                     startActivity(intent);
                     finish();
                 })
