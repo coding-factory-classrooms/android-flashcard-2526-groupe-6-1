@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -61,11 +62,11 @@ public class ScoreActivity extends AppCompatActivity {
         shareButton.setOnClickListener(view -> shareScore());
 
         // Bouton rejouer : on renvoie seulement les questions ratées
-//        replayButton.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, LevelActivity.class);
-//            intent.putParcelableArrayListExtra("replayQuestions", questionPerdu);
-//            startActivity(intent);
-//        });
+        replayButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LevelActivity.class);
+            intent.putParcelableArrayListExtra("question", getIntent().getParcelableArrayListExtra("questionLose"));
+            startActivity(intent);
+        });
     }
 
     // fonction du boutton partage
