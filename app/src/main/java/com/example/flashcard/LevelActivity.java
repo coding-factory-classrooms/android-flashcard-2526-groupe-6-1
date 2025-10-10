@@ -109,6 +109,7 @@ public class LevelActivity extends AppCompatActivity {
         for (MainActivity.Reponse answer : answers) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText(answer.getReponce());
+            radioButton.setTextColor(getColor(R.color.white));
             radioButton.setId(View.generateViewId());
             radioGroup.addView(radioButton);
         }

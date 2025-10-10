@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/image">
+    android:background="#282626"
+    tools:context=".MainActivity">
 
     <Button
         android:id="@+id/aproposbutton"
@@ -42,8 +42,11 @@
         android:id="@+id/stop_music_button"
         android:layout_width="87dp"
         android:layout_height="51dp"
+        android:layout_marginBottom="16dp"
         android:text="mute"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.086"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

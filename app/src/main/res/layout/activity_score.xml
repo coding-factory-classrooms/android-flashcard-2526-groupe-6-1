@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/image"
+    android:background="#282626"
     tools:context=".ScoreActivity">
 
     <!-- Texte du score -->
@@ -17,14 +16,14 @@
         android:id="@+id/scoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="60dp"
         android:text="Score : 8 / 10"
         android:textColor="#EF0A0A"
         android:textSize="50sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statsTextView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/shareButton"
@@ -42,8 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreTextView"
-        tools:visibility="gone" />
+        app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
 
     <Button
         android:id="@+id/replayButton"
@@ -55,15 +53,6 @@
         app:layout_constraintEnd_toEndOf="@+id/shareButton"
         app:layout_constraintHorizontal_bias="0.785"
         app:layout_constraintStart_toStartOf="@+id/shareButton"
-        app:layout_constraintTop_toBottomOf="@+id/shareButton"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/shareButton" />
 
-    <TextView
-        android:id="@+id/statsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="22dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
