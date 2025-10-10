@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -157,6 +158,19 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        //inisialisation music
+        Intent musicServiceIntent = new Intent(this, MusicService.class);
+        startService(musicServiceIntent);
+
+        Button stopMusicButton = findViewById(R.id.stop_music_button);
+        stopMusicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService(musicServiceIntent);
+            }
+        });
+
 
         startbutton = findViewById(R.id.startbutton);
         startbutton.setOnClickListener(view -> {
