@@ -73,6 +73,7 @@ public class LevelActivity extends AppCompatActivity {
     private void loadQuestion(int index) {
         MainActivity.Question currentQuestion = questionList.get(index);
         List<MainActivity.Reponse> answers = currentQuestion.getReponses();
+        Collections.shuffle(answers);
 
         difficultytextView.setText(currentQuestion.getDifficulte());
         questiontextView.setText("Que voyez-vous ?");
