@@ -122,6 +122,12 @@ public class LevelActivity extends AppCompatActivity {
             }
             checkAnswer(selectedId);
         });
+        //  Listener pour retourner l'image
+        guess.setOnClickListener(v -> {              // Détecte un clic sur l’image
+            float currentRotation = guess.getRotationX();  // et la on récupère la rotation actuelle
+            float newRotation = (Math.abs(currentRotation - 180f) < 1f) ? 0f : 180f; // Si elle est proche de 180°, remet à 0 sinon tourne à 180°
+            guess.animate().rotationX(newRotation).setDuration(500).start(); // Lance l’animation de rotation en 0,5 s
+        });
     }
 
     private void checkAnswer(int selectedId) {
