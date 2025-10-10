@@ -159,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        //inisialisation music
         Intent musicServiceIntent = new Intent(this, MusicService.class);
         startService(musicServiceIntent);
 
@@ -202,33 +201,32 @@ public class MainActivity extends AppCompatActivity {
             List<Question> toutesLesQuestions = chargerQuestionsJson();
 
             if (toutesLesQuestions == null || toutesLesQuestions.isEmpty()) {
-                Log.e("JSON_ERROR", "La liste de questions est vide ou nulle après lecture du JSON.");
+                Log.e("JSON_ERROR", "question vide");
                 return;
             }
 
-            ArrayList<Question> questionsPourLeNiveau;
+            ArrayList<Question> questionsForLevel;
             String difficultePourJson;
 
-            // --- MODIFICATION ICI : Logique pour "Hardcore" ---
             if (options[which].equals("Hardcore")) {
-                difficultePourJson = "difficile"; // On se base sur les questions difficiles
-                questionsPourLeNiveau = toutesLesQuestions.stream()
+                difficultePourJson = "difficile";
+                questionsForLevel = toutesLesQuestions.stream()
                         .filter(q -> q.getDifficulte() != null && q.getDifficulte().equalsIgnoreCase(difficultePourJson))
                         .collect(Collectors.toCollection(ArrayList::new));
 
-                for (Question q : questionsPourLeNiveau) {
+                for (Question q : questionsForLevel) {
                     q.setDifficulte("Hardcore");
                 }
             } else {
                 String[] difficultiesInJson = {"facile", "moyen", "difficile"};
                 difficultePourJson = difficultiesInJson[which];
-                questionsPourLeNiveau = toutesLesQuestions.stream()
+                questionsForLevel = toutesLesQuestions.stream()
                         .filter(q -> q.getDifficulte() != null && q.getDifficulte().equalsIgnoreCase(difficultePourJson))
                         .collect(Collectors.toCollection(ArrayList::new));
             }
 
             Intent intent = new Intent(MainActivity.this, LevelActivity.class);
-            intent.putParcelableArrayListExtra("question", questionsPourLeNiveau);
+            intent.putParcelableArrayListExtra("question", questionsForLevel);
             startActivity(intent);
 
             dialog.dismiss();

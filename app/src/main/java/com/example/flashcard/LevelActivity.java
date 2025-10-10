@@ -59,7 +59,7 @@ public class LevelActivity extends AppCompatActivity {
         difficultytextView = findViewById(R.id.difficultytextView);
         guess = findViewById(R.id.pictureimageView);
         confirmationButton = findViewById(R.id.confirmbutton);
-        radioGroup = findViewById(R.id.radiogroup); // Assurez-vous que l'ID est "radiogroup" dans le XML
+        radioGroup = findViewById(R.id.radiogroup);
     }
 
     private void initializeQuiz() {
@@ -124,10 +124,10 @@ public class LevelActivity extends AppCompatActivity {
             checkAnswer(selectedId);
         });
         //  Listener pour retourner l'image
-        guess.setOnClickListener(v -> {              // Détecte un clic sur l’image
-            float currentRotation = guess.getRotationX();  // et la on récupère la rotation actuelle
-            float newRotation = (Math.abs(currentRotation - 180f) < 1f) ? 0f : 180f; // Si elle est proche de 180°, remet à 0 sinon tourne à 180°
-            guess.animate().rotationX(newRotation).setDuration(500).start(); // Lance l’animation de rotation en 0,5 s
+        guess.setOnClickListener(v -> {
+            float currentRotation = guess.getRotationX();
+            float newRotation = (Math.abs(currentRotation - 180f) < 1f) ? 0f : 180f;
+            guess.animate().rotationX(newRotation).setDuration(500).start();
         });
     }
 
