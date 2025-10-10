@@ -35,6 +35,7 @@ public class LevelActivity extends AppCompatActivity {
 
     private List<MainActivity.Question> questionList, questionLoseList;
     private int currentQuestionIndex = 0;
+    private MainActivity.Question currentQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     private void loadQuestion(int index) {
-        MainActivity.Question currentQuestion = questionList.get(index);
+        currentQuestion = questionList.get(index);
         List<MainActivity.Reponse> answers = currentQuestion.getReponses();
         Collections.shuffle(answers);
 
@@ -160,6 +161,7 @@ public class LevelActivity extends AppCompatActivity {
                 .setTitle(title)
                 .setMessage(message)
                 .setCancelable(false)
+                .setIcon(currentQuestion.getImageReponce(this))
                 .setPositiveButton("Suivant", (dialog, which) -> {
                     currentQuestionIndex++;
                     if (currentQuestionIndex < questionList.size()) {
