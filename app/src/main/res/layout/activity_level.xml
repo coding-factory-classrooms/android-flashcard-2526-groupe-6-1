@@ -9,20 +9,20 @@
 
     <ImageView
         android:id="@+id/pictureimageView"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="72dp"
+        android:layout_width="wrap_content"
+        android:layout_height="422dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/alternance" />
 
     <TextView
         android:id="@+id/questiontextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:text="Question"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.104"
@@ -33,11 +33,11 @@
         android:id="@+id/confirmbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="10dp"
         android:text="Valider la réponse"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radiogroup" />
 
     <TextView
         android:id="@+id/difficultytextView"
@@ -64,12 +64,12 @@
     <RadioGroup
         android:id="@+id/radiogroup"
         android:layout_width="276dp"
-        android:layout_height="199dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/questiontextView" >
+        app:layout_constraintTop_toBottomOf="@+id/questiontextView">
 
         <LinearLayout
             android:id="@+id/radiogroupcontaner"

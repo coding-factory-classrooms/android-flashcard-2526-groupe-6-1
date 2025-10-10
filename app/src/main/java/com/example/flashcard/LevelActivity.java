@@ -150,6 +150,10 @@ public class LevelActivity extends AppCompatActivity {
                 .setMessage("Vous avez répondu à toutes les questions.")
                 .setCancelable(false)
                 .setPositiveButton("Retour au menu", (dialog, which) -> {
+                    Intent intent = new Intent(LevelActivity.this, ScoreActivity.class);
+
+                    intent.putParcelableArrayListExtra("question", getIntent().getParcelableArrayListExtra("question"));
+                    startActivity(intent);
                     finish();
                 })
                 .show();
