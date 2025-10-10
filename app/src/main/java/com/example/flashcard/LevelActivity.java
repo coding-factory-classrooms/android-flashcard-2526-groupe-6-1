@@ -18,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Collections;
 import java.util.List;
 
 public class LevelActivity extends AppCompatActivity {
@@ -64,6 +65,8 @@ public class LevelActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        Collections.shuffle(questionList);
         loadQuestion(currentQuestionIndex);
     }
 
