@@ -1,41 +1,19 @@
 package com.example.flashcard;
-
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
+import android.view.View;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-
 import android.widget.Button;
-import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 public class ScoreActivity extends AppCompatActivity {
 
-    // Classe Question complète
-    public static class Question implements Serializable {
-        String difficulty;
-        String questionText;
-        ArrayList<String> answers;
-        String correctAnswer;
 
-        public Question(String difficulty, String questionText, ArrayList<String> answers, String correctAnswer) {
-            this.difficulty = difficulty;
-            this.questionText = questionText;
-            this.answers = answers;
-            this.correctAnswer = correctAnswer;
-        }
-    }
 
     private int score;
     private List<MainActivity.Question> totalQuestions, questionPerdu;
-    private String difficulte; // simulée pour test
+    private String difficulte;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +23,7 @@ public class ScoreActivity extends AppCompatActivity {
         TextView scoreTextView = findViewById(R.id.scoreTextView);
         Button shareButton = findViewById(R.id.shareButton);
         Button replayButton = findViewById(R.id.replayButton);
+
         // recuperation de la list de question de la page LevelActivity
         Intent srcintent = getIntent();
         totalQuestions = srcintent.getParcelableArrayListExtra("question");
@@ -52,21 +31,26 @@ public class ScoreActivity extends AppCompatActivity {
 
         // calcul du score
         score = totalQuestions.size() - questionPerdu.size();
-        difficulte = totalQuestions.get(0).getDifficulte();
-
-        questionPerdu = null;
+        difficulte = totalQuestions.get(0).getDifficulte(); // le get(0 ) ça nous permet de prendre le premier objet de la liste question
 
         scoreTextView.setText("Score : " + score + " / " + totalQuestions.size());
 
         // Bouton partager
         shareButton.setOnClickListener(view -> shareScore());
 
+
         // Bouton rejouer : on renvoie seulement les questions ratées
-        replayButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, LevelActivity.class);
-            intent.putParcelableArrayListExtra("question", getIntent().getParcelableArrayListExtra("questionLose"));
-            startActivity(intent);
-        });
+        if (questionPerdu != null || questionPerdu.isEmpty()) {
+            replayButton.setOnClickListener(v -> {
+                Intent intent = new Intent(this, LevelActivity.class);
+                intent.putParcelableArrayListExtra("question", getIntent().getParcelableArrayListExtra("questionLose"));
+                startActivity(intent);
+                finish();
+            });
+        }
+        else {
+            replayButton.setVisibility(View.GONE);
+        }
     }
 
     // fonction du boutton partage
