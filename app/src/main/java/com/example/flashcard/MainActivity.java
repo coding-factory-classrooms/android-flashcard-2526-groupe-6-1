@@ -94,9 +94,12 @@ public class MainActivity extends AppCompatActivity {
 
         public Question() {} // Constructeur vide obligatoire pour Gson
 
-
         public String getDifficulte() {
             return difficulte;
+        }
+
+        public void setDifficulte(String difficulte) {
+            this.difficulte = difficulte;
         }
 
         public List<Reponse> getReponses() {
@@ -169,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         selectbutton = findViewById(R.id.selectbutton);
         selectbutton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ListLevelActivity.class);
-            List<Question> toutesLesQuestions = chargerQuestionsDepuisJson();
+            List<Question> toutesLesQuestions = chargerQuestionsJson();
             intent.putParcelableArrayListExtra("question", new ArrayList<>(toutesLesQuestions));
             startActivity(intent);
         });
@@ -179,25 +182,39 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choisis la difficulté");
 
-        CharSequence[] options = {"Facile", "Moyen", "Difficile"};
-        String[] difficultiesInJson = {"facile", "moyen", "difficile"};
+        CharSequence[] options = {"Facile", "Moyen", "Difficile", "Hardcore"};
 
         builder.setItems(options, (dialog, which) -> {
-            List<Question> toutesLesQuestions = chargerQuestionsDepuisJson();
+            List<Question> toutesLesQuestions = chargerQuestionsJson();
 
             if (toutesLesQuestions == null || toutesLesQuestions.isEmpty()) {
                 Log.e("JSON_ERROR", "La liste de questions est vide ou nulle après lecture du JSON.");
                 return;
             }
 
-            String difficulteChoisie = difficultiesInJson[which];
+            ArrayList<Question> questionsPourLeNiveau;
+            String difficultePourJson;
 
-            ArrayList<Question> questionsFiltrees = toutesLesQuestions.stream()
-                    .filter(q -> q.getDifficulte() != null && q.getDifficulte().equalsIgnoreCase(difficulteChoisie))
-                    .collect(Collectors.toCollection(ArrayList::new));
+            // --- MODIFICATION ICI : Logique pour "Hardcore" ---
+            if (options[which].equals("Hardcore")) {
+                difficultePourJson = "difficile"; // On se base sur les questions difficiles
+                questionsPourLeNiveau = toutesLesQuestions.stream()
+                        .filter(q -> q.getDifficulte() != null && q.getDifficulte().equalsIgnoreCase(difficultePourJson))
+                        .collect(Collectors.toCollection(ArrayList::new));
+
+                for (Question q : questionsPourLeNiveau) {
+                    q.setDifficulte("Hardcore");
+                }
+            } else {
+                String[] difficultiesInJson = {"facile", "moyen", "difficile"};
+                difficultePourJson = difficultiesInJson[which];
+                questionsPourLeNiveau = toutesLesQuestions.stream()
+                        .filter(q -> q.getDifficulte() != null && q.getDifficulte().equalsIgnoreCase(difficultePourJson))
+                        .collect(Collectors.toCollection(ArrayList::new));
+            }
 
             Intent intent = new Intent(MainActivity.this, LevelActivity.class);
-            intent.putParcelableArrayListExtra("question", questionsFiltrees);
+            intent.putParcelableArrayListExtra("question", questionsPourLeNiveau);
             startActivity(intent);
 
             dialog.dismiss();
@@ -207,7 +224,8 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private List<Question> chargerQuestionsDepuisJson() {
+
+    private List<Question> chargerQuestionsJson() {
         InputStream inputStream = getResources().openRawResource(R.raw.questions);
         Reader reader = new InputStreamReader(inputStream);
 

@@ -3,6 +3,9 @@ package com.example.flashcard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,6 +67,18 @@ public class LevelActivity extends AppCompatActivity {
             Toast.makeText(this, "Aucune question trouvée pour cette difficulté.", Toast.LENGTH_LONG).show();
             finish();
             return;
+        }
+
+        String difficulty = questionList.get(0).getDifficulte();
+
+        if ("Hardcore".equalsIgnoreCase(difficulty)) {
+            RotateAnimation rotate = new RotateAnimation(0, 360,
+                    Animation.RELATIVE_TO_SELF, 0.5f,
+                    Animation.RELATIVE_TO_SELF, 0.5f);
+            rotate.setDuration(4000);
+            rotate.setRepeatCount(Animation.INFINITE);
+            rotate.setInterpolator(new android.view.animation.LinearInterpolator());
+            guess.startAnimation(rotate);
         }
 
         Collections.shuffle(questionList);
